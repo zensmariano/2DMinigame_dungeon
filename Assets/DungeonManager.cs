@@ -1,8 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class DungeonManager : MonoBehaviour {
+
+    [HideInInspector]
+    public Tile tlTile;
+    [HideInInspector]
+    public Tile tmTile;
+    [HideInInspector]
+    public Tile trTile;
+    [HideInInspector]
+    public Tile mlTile;
+    [HideInInspector]
+    public Tile mmTile;
+    [HideInInspector]
+    public Tile mrTile;
+    [HideInInspector]
+    public Tile blTile;
+    [HideInInspector]
+    public Tile bmTile;
+    [HideInInspector]
+    public Tile brTile;
+
 
     public int boardRows, boardColumns;
     public int minRoomSize, maxRoomSize;
@@ -298,8 +319,10 @@ public class DungeonManager : MonoBehaviour {
         }
     }
 
-    void Start()
+   
+    public void GenerateDungeon()
     {
+        
         SubDungeon rootSubDungeon = new SubDungeon(new Rect(0, 0, boardRows, boardColumns));
         CreateBSP(rootSubDungeon);
         rootSubDungeon.CreateRoom();
@@ -307,6 +330,6 @@ public class DungeonManager : MonoBehaviour {
         boardPositionsFloor = new GameObject[boardRows, boardColumns];
         DrawRooms(rootSubDungeon);
         DrawCorridors(rootSubDungeon);
-        
     }
+    
 }
