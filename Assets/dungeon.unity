@@ -326,8 +326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4371a8ff96db110468d97fe1bc887bd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 545476250}
-  board: {fileID: 766974094}
 --- !u!114 &545476252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,7 +444,7 @@ MonoBehaviour:
   rows: 40
   columns: 40
   minSize: 6
-  maxSize: 14
+  maxSize: 10
 --- !u!4 &766974094
 Transform:
   m_ObjectHideFlags: 0

@@ -9,7 +9,6 @@ public class DungeonManager : MonoBehaviour {
     [HideInInspector]
     public GameObject tile;
     
-
     public int rows, columns;
     public int minSize, maxSize;
     private GameObject[,] boardPositions;
@@ -27,9 +26,7 @@ public class DungeonManager : MonoBehaviour {
     {
         if (subDungeon.IsLeaf())
         {
-            if (subDungeon.rect.width > maxSize
-              || subDungeon.rect.height > maxSize
-              || Random.Range(0.0f, 1.0f) > 0.25)
+            if (subDungeon.rect.width > maxSize || subDungeon.rect.height > maxSize || Random.Range(0.0f, 1.0f) > 0.25)
             {
 
                 if (subDungeon.Split(minSize, maxSize))
@@ -84,8 +81,6 @@ public class DungeonManager : MonoBehaviour {
         public Rect room = new Rect(-1, -1, 0, 0); 
         public int debugId;
         public List<Rect> hallways = new List<Rect>();
-
-        private static int debugCounter = 0;
 
         public SubDungeon(Rect mrect)
         {
