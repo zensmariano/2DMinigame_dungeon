@@ -79,14 +79,11 @@ public class DungeonManager : MonoBehaviour {
         public SubDungeon left, right;
         public Rect rect;
         public Rect room = new Rect(-1, -1, 0, 0); 
-        public int debugId;
         public List<Rect> hallways = new List<Rect>();
 
         public SubDungeon(Rect mrect)
         {
             rect = mrect;
-            debugId = debugCounter;
-            debugCounter++;
         }
 
         public bool IsLeaf()
