@@ -65,6 +65,12 @@ public class DungeonManagerEditor : Editor {
         {
             myScript.GenerateDungeon();
         }
+
+        if (GUILayout.Button("Clean Dungeon"))
+        {
+            myScript.CleanDungeon();
+        }
+
     }
 
 }
