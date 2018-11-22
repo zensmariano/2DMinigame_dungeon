@@ -13,7 +13,7 @@ public class PlayerController_2D : MonoBehaviour {
 	public Animator anim_2d;
 	private Vector2 moveDirection;
 	private Vector2 lastMove;
-	private bool isAttacking = false;
+	private bool isAttacking;
 	private bool isMoving;
 	protected Coroutine attackRoutine;
 
@@ -26,26 +26,34 @@ public class PlayerController_2D : MonoBehaviour {
 	void Update () {
 
 		isMoving = false;
+		isAttacking = false;
 		float V = Input.GetAxis ("Vertical");
 		float H = Input.GetAxis ("Horizontal");
 
-		if (Input.GetAxis ("Horizontal") > 0.2f || Input.GetAxis ("Horizontal") > -0.2f) {
+		if (Input.GetAxis ("Horizontal") > 0.2f || Input.GetAxis ("Horizontal") < -0.2f) {
 			transform.Translate (new Vector3 (H * moveSpeed * Time.deltaTime, 0.0f, 0.0f));
 			isMoving = true;
 			lastMove = new Vector2 (H, 0.0f);
 		}
 
-		if (Input.GetAxis ("Vertical") > 0.2f || Input.GetAxis ("Vertical") > -0.2f) {
+		if (Input.GetAxis ("Vertical") > 0.2f || Input.GetAxis ("Vertical") < -0.2f) {
 			transform.Translate (new Vector3 (V * moveSpeed * Time.deltaTime, 0.0f, 0.0f));
 			isMoving = true;
 			lastMove = new Vector2 (0.0f,V);
+		}
+
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			attackRoutine = StartCoroutine(Attack ());
+			isAttacking = true;
+			anim_2d.SetBool ("IsAttacking", isAttacking);
 		}
 
 		anim_2d.SetFloat ("Horizontal", H);
 		anim_2d.SetFloat ("Vertical",V);
 		anim_2d.SetFloat ("LastHorizontal", lastMove.x);
 		anim_2d.SetFloat ("LastVertical", lastMove.y);
-		anim_2d.SetBool ("isMoving", true);
+		anim_2d.SetBool ("IsMoving", isMoving);
+
 	}
 
 	/*public void Move()
@@ -80,7 +88,7 @@ public class PlayerController_2D : MonoBehaviour {
 		}
 	}*/
 
-	/*private IEnumerator Attack()
+	private IEnumerator Attack()
 	{
 		if (!isAttacking) {
 			
@@ -98,6 +106,6 @@ public class PlayerController_2D : MonoBehaviour {
 			StopCoroutine (attackRoutine);
 			isAttacking = false;
 		}
-	}*/
+	}
 }
 								
