@@ -31,13 +31,17 @@ public class PlayerController_2D : MonoBehaviour {
 		float H = Input.GetAxis ("Horizontal");
 
 		if (Input.GetAxis ("Horizontal") > 0.2f || Input.GetAxis ("Horizontal") < -0.2f) {
-			transform.Translate (new Vector3 (H * moveSpeed * Time.deltaTime, 0.0f, 0.0f));
+            if (H > 0.2f) H = 1;
+            if (H < -0.2f) H = -1;
+            transform.position += (new Vector3 (H * moveSpeed * Time.deltaTime, 0.0f, 0.0f));
 			isMoving = true;
 			lastMove = new Vector2 (H, 0.0f);
 		}
 
 		if (Input.GetAxis ("Vertical") > 0.2f || Input.GetAxis ("Vertical") < -0.2f) {
-			transform.Translate (new Vector3 (V * moveSpeed * Time.deltaTime, 0.0f, 0.0f));
+            if (V > 0.2f) V = 1;
+            if (V < -0.2f) V = -1;
+            transform.position += (new Vector3 (0.0f, V * moveSpeed * Time.deltaTime, 0.0f));
 			isMoving = true;
 			lastMove = new Vector2 (0.0f,V);
 		}

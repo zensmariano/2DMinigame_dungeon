@@ -1,51 +1,56 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class DungeonManager : MonoBehaviour {
 
     [HideInInspector]
-    public Tile tlTile;
+    public GameObject tlTile;
     [HideInInspector]
-    public Tile tmTile;
+    public GameObject tmTile;
     [HideInInspector]
-    public Tile trTile;
+    public GameObject trTile;
     [HideInInspector]
-    public Tile mlTile;
+    public GameObject mlTile;
     [HideInInspector]
-    public Tile mmTile;
+    public GameObject mmTile;
     [HideInInspector]
-    public Tile mrTile;
+    public GameObject mrTile;
     [HideInInspector]
-    public Tile blTile;
+    public GameObject blTile;
     [HideInInspector]
-    public Tile bmTile;
+    public GameObject bmTile;
     [HideInInspector]
-    public Tile brTile;
+    public GameObject brTile;
 
 
     public int rows, columns;
     public int minSize, maxSize;
-    private GameObject[,] boardPositions;
-    Tilemap tilemap;
-
+    private GameObject[,] tilePositions;
+    
     private void UpdateTilemapUsingTreeNode(SubDungeon subDungeon)
     {
+
+        if (subDungeon == null)
+        {
+            return;
+        }
         if (subDungeon.IsLeaf())
         {
             for (int i = (int)subDungeon.room.x; i < (int)subDungeon.room.xMax; i++)
             {
                 for (int j = (int)subDungeon.room.y; j < (int)subDungeon.room.yMax; j++)
                 {
-                    tilemap.SetTile(new Vector3Int(i, j, 0), mmTile);
+                    GameObject instance = Instantiate(mmTile, new Vector3(i, j, 0f), Quaternion.identity) as GameObject;
+                    instance.transform.SetParent(transform);
+                    tilePositions[i, j] = instance;
                 }
             }
         }
         else
         {
-            if (subDungeon.left != null) UpdateTilemapUsingTreeNode(subDungeon.left);
-            if (subDungeon.right != null) UpdateTilemapUsingTreeNode(subDungeon.right);
+            UpdateTilemapUsingTreeNode(subDungeon.left);
+            UpdateTilemapUsingTreeNode(subDungeon.right);
         }
 
         foreach (Rect hallway in subDungeon.hallways)
@@ -54,27 +59,30 @@ public class DungeonManager : MonoBehaviour {
             {
                 for (int j = (int)hallway.y; j < hallway.yMax; j++)
                 {
-                    tilemap.SetTile(new Vector3Int(i, j, 0), mmTile);
+                    GameObject instance = Instantiate(mmTile, new Vector3(i, j, 0f), Quaternion.identity) as GameObject;
+                    instance.transform.SetParent(transform);
+                    tilePositions[i, j] = instance;
                 }
             }
         }
     }
 
-    private Tile GetTileByNeihbors(int i, int j)
+    private GameObject GetTileByNeihbors(int i, int j)
     {
-        var mmGridTile = tilemap.GetTile(new Vector3Int(i, j, 0));
+        //GameObject instance = Instantiate(tilePositions[i, j], new Vector3(i, j, 0f), Quaternion.identity) as GameObject;
+        GameObject mmGridTile = tilePositions[i, j];
         if (mmGridTile == null) return null; 
 
-        var blGridTile = tilemap.GetTile(new Vector3Int(i - 1, j - 1, 0));
-        var bmGridTile = tilemap.GetTile(new Vector3Int(i, j - 1, 0));
-        var brGridTile = tilemap.GetTile(new Vector3Int(i + 1, j - 1, 0));
+        var blGridTile = tilePositions[i - 1, j - 1];
+        var bmGridTile = tilePositions[i, j - 1];
+        var brGridTile = tilePositions[i + 1, j - 1];
 
-        var mlGridTile = tilemap.GetTile(new Vector3Int(i - 1, j, 0));
-        var mrGridTile = tilemap.GetTile(new Vector3Int(i + 1, j, 0));
+        var mlGridTile = tilePositions[i - 1, j];
+        var mrGridTile = tilePositions[i + 1, j];
 
-        var tlGridTile = tilemap.GetTile(new Vector3Int(i - 1, j + 1, 0));
-        var tmGridTile = tilemap.GetTile(new Vector3Int(i, j + 1, 0));
-        var trGridTile = tilemap.GetTile(new Vector3Int(i + 1, j + 1, 0));
+        var tlGridTile = tilePositions[i - 1, j + 1];
+        var tmGridTile = tilePositions[i, j + 1];
+        var trGridTile = tilePositions[i + 1, j + 1];
 
         
         if (mlGridTile == null && tmGridTile == null) return tlTile;
@@ -90,11 +98,13 @@ public class DungeonManager : MonoBehaviour {
 
         return mmTile;
     }
-
+    
     public void CleanDungeon()
     {
-        tilemap = GetComponentInChildren<Tilemap>();
-        tilemap.ClearAllTiles();
+        foreach (Transform child in transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
     }
     
     public void CreateBSP(SubDungeon subDungeon)
@@ -122,19 +132,31 @@ public class DungeonManager : MonoBehaviour {
                 for (int j = (int)subDungeon.room.y; j < (int)subDungeon.room.yMax; j++)
                 {
                     var tile = GetTileByNeihbors(i, j);
-                    if (tile != null)
-                    {
-                        tilemap.SetTile(new Vector3Int(i, j, 0), tile);
-                    }
-
-                    tilemap.SetTile(new Vector3Int(i, j, 0), tile);
+                    GameObject instance = Instantiate(tile, new Vector3(i, j, 0f), Quaternion.identity) as GameObject;
+                    instance.transform.SetParent(transform);
+                    tilePositions[i, j] = instance;
                 }
             }
         }
         else
         {
-            if (subDungeon.left != null) DrawMap(subDungeon.left);
+            if (subDungeon.left != null)
+                DrawMap(subDungeon.left);
             if (subDungeon.right != null) DrawMap(subDungeon.right);
+        }
+
+        foreach (Rect hallway in subDungeon.hallways)
+        {
+            for (int i = (int)hallway.x; i < hallway.xMax; i++)
+            {
+                for (int j = (int)hallway.y; j < hallway.yMax; j++)
+                {
+                    var tile = GetTileByNeihbors(i, j);
+                    GameObject instance = Instantiate(tile, new Vector3(i, j, 0f), Quaternion.identity) as GameObject;
+                    instance.transform.SetParent(transform);
+                    tilePositions[i, j] = instance;
+                }
+            }
         }
     }
     
@@ -233,40 +255,40 @@ public class DungeonManager : MonoBehaviour {
             {
                 if (Random.Range(0, 1) > 2)
                 {
-                    hallways.Add(new Rect(lpoint.x, lpoint.y, Mathf.Abs(w) + 1, 1));
+                    hallways.Add(new Rect(lpoint.x, lpoint.y, Mathf.Abs(w)+4, 4));
 
                     if (h < 0)
                     {
-                        hallways.Add(new Rect(rpoint.x, lpoint.y, 1, Mathf.Abs(h)));
+                        hallways.Add(new Rect(rpoint.x, lpoint.y, 4, Mathf.Abs(h)));
                     }
                     else
                     {
-                        hallways.Add(new Rect(rpoint.x, lpoint.y, 1, -Mathf.Abs(h)));
+                        hallways.Add(new Rect(rpoint.x, lpoint.y, 4, -Mathf.Abs(h)));
                     }
                 }
                 else
                 {
                     if (h < 0)
                     {
-                        hallways.Add(new Rect(lpoint.x, lpoint.y, 1, Mathf.Abs(h)));
+                        hallways.Add(new Rect(lpoint.x, lpoint.y, 4, Mathf.Abs(h)));
                     }
                     else
                     {
-                        hallways.Add(new Rect(lpoint.x, rpoint.y, 1, Mathf.Abs(h)));
+                        hallways.Add(new Rect(lpoint.x, rpoint.y, 4, Mathf.Abs(h)));
                     }
 
-                    hallways.Add(new Rect(lpoint.x, rpoint.y, Mathf.Abs(w) + 1, 1));
+                    hallways.Add(new Rect(lpoint.x, rpoint.y, Mathf.Abs(w)+4, 4));
                 }
             }
             else
             {
                 if (h < 0)
                 {
-                    hallways.Add(new Rect((int)lpoint.x, (int)lpoint.y, 1, Mathf.Abs(h)));
+                    hallways.Add(new Rect((int)lpoint.x, (int)lpoint.y, 4, Mathf.Abs(h)));
                 }
                 else
                 {
-                    hallways.Add(new Rect((int)rpoint.x, (int)rpoint.y, 1, Mathf.Abs(h)));
+                    hallways.Add(new Rect((int)rpoint.x, (int)rpoint.y, 4, Mathf.Abs(h)));
                 }
             }
 
@@ -326,8 +348,12 @@ public class DungeonManager : MonoBehaviour {
         SubDungeon rootDungeon = new SubDungeon(new Rect(0, 0, rows, columns));
         CreateBSP(rootDungeon);
         rootDungeon.GenerateMap();
+
+        tilePositions = new GameObject[rows, columns];
+
         UpdateTilemapUsingTreeNode(rootDungeon);
         DrawMap(rootDungeon);
+
     }
 
     public void Start()

@@ -37,21 +37,21 @@ public class DungeonManagerEditor : Editor {
         if (showTiles)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Top", GUILayout.Width(20));
+            EditorGUILayout.LabelField("Top", GUILayout.Width(40));
             EditorGUILayout.PropertyField(tlTile, new GUIContent(""));
             EditorGUILayout.PropertyField(tmTile, new GUIContent(""));
             EditorGUILayout.PropertyField(trTile, new GUIContent(""));
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Middle", GUILayout.Width(20));
+            EditorGUILayout.LabelField("Middle", GUILayout.Width(40));
             EditorGUILayout.PropertyField(mlTile, new GUIContent(""));
             EditorGUILayout.PropertyField(mmTile, new GUIContent(""));
             EditorGUILayout.PropertyField(mrTile, new GUIContent(""));
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Bottom", GUILayout.Width(20));
+            EditorGUILayout.LabelField("Bottom", GUILayout.Width(40));
             EditorGUILayout.PropertyField(blTile, new GUIContent(""));
             EditorGUILayout.PropertyField(bmTile, new GUIContent(""));
             EditorGUILayout.PropertyField(brTile, new GUIContent(""));
