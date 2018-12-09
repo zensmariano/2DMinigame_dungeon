@@ -34,9 +34,17 @@ public class DungeonManager : MonoBehaviour {
 
     public GameObject enemy;
     public GameObject slimeEnemiesContainer;
+    public GameObject coinsContainer;
     public int minEnemiesPerRoom;
     public int maxEnemiesPerRoom;
     private List<Vector3> enemySpawnPoints;
+    private List<Vector3> coinSpawnPoints;
+
+    public GameObject smallCoin;
+	public GameObject mediumCoin;
+	public GameObject bigCoin;
+
+	public Vector3 coinSpawnRate;
 
 
     public class SubDungeon
@@ -354,6 +362,19 @@ public class DungeonManager : MonoBehaviour {
                             enemySpawnPoints.Add(new Vector3(i, j, 0f));
                         }
                     }
+
+                    if(Random.Range(0,200) < coinSpawnRate.z){
+					    instance = Instantiate(bigCoin, new Vector3(i, j, 0f), Quaternion.identity, coinsContainer.transform) as GameObject;
+					    
+				    }
+                    else if(Random.Range(0,200) < coinSpawnRate.y){
+					    instance = Instantiate(mediumCoin, new Vector3(i, j, 0f), Quaternion.identity, coinsContainer.transform) as GameObject;
+					  
+				    }
+                    else if(Random.Range(0,200) < coinSpawnRate.x){
+					    instance = Instantiate(smallCoin, new Vector3(i, j, 0f), Quaternion.identity, coinsContainer.transform) as GameObject;
+					   
+				    }
                 }
             }
             roomCount++;
@@ -386,6 +407,30 @@ public class DungeonManager : MonoBehaviour {
     }
 
     
+    
+
+    public void CleanDungeon()
+    {
+        foreach (Transform child in transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        GameObject enemySpawner = slimeEnemiesContainer;
+        foreach (Transform child in enemySpawner.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+    }
+
+    private void CleanCoins(){
+        GameObject coinSpawner = coinsContainer;
+	    foreach (Transform child in coinSpawner.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+	}
+
     private void SpawnPlayer(SubDungeon subDungeon)
     {
     	player.transform.position = playerPosition;
@@ -405,28 +450,40 @@ public class DungeonManager : MonoBehaviour {
                 GameObject.Instantiate(enemy, enemyPosition, Quaternion.identity, slimeEnemiesContainer.transform);
             }
         }
-            
-        
 	}
 
-
-    public void CleanDungeon()
+/* 
+	public void GenerateCoins()
     {
-        foreach (Transform child in transform)
-        {
-            GameObject.Destroy(child.gameObject);
-        }
-
-        GameObject EnemySpawner = GameObject.FindGameObjectWithTag("EnemySpawner");
-        foreach (Transform child in EnemySpawner.transform)
-        {
-            GameObject.Destroy(child.gameObject);
-        }
-    }
-
+		
+		
+   
+		foreach(var tile in tilePositions){
+            GameObject instance = Instantiate(smallCoin, tile.transform.position, Quaternion.identity, coinsContainer.transform) as GameObject;
+        
+			if (tile == mmTile){
+				 if(Random.Range(0,100) < coinSpawnRate.x){
+					 GameObject instance = Instantiate(smallCoin, tile.transform.position, Quaternion.identity) as GameObject;
+					 instance.transform.SetParent(transform);
+				 }
+				 if(Random.Range(0,100) < coinSpawnRate.y){
+					 GameObject instance = Instantiate(mediumCoin, tile.transform.position, Quaternion.identity) as GameObject;
+					 instance.transform.SetParent(transform);
+				 }
+				 if(Random.Range(0,100) < coinSpawnRate.z){
+					 GameObject instance = Instantiate(bigCoin, tile.transform.position, Quaternion.identity) as GameObject;
+					 instance.transform.SetParent(transform);
+				 }                                                                                                                       
+			}
+			
+		}
+        
+	}
+*/
     public void GenerateDungeon()
     {
         CleanDungeon();
+        CleanCoins();
         roomCount = 0;
 
         SubDungeon rootDungeon = new SubDungeon(new Rect(0, 0, rows, columns));
@@ -441,6 +498,8 @@ public class DungeonManager : MonoBehaviour {
         SpawnPlayer(rootDungeon);
 
         SpawnEnemies (rootDungeon);
+
+        //GenerateCoins();
     }
 
 
@@ -451,3 +510,4 @@ public class DungeonManager : MonoBehaviour {
     }
     
 }
+
