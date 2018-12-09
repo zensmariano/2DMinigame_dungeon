@@ -34,17 +34,26 @@ public class DungeonManager : MonoBehaviour {
 
     public GameObject enemy;
     public GameObject slimeEnemiesContainer;
-    public GameObject coinsContainer;
     public int minEnemiesPerRoom;
     public int maxEnemiesPerRoom;
     private List<Vector3> enemySpawnPoints;
-    private List<Vector3> coinSpawnPoints;
 
+    public GameObject coinsContainer;
     public GameObject smallCoin;
 	public GameObject mediumCoin;
 	public GameObject bigCoin;
+	public Vector3 coinSpawnRates;
 
-	public Vector3 coinSpawnRate;
+    public GameObject potionsContainer;
+    public GameObject healPotion;
+    public int healPotionSpawnRate;
+
+    public GameObject attackBoostPotion;
+    public GameObject shieldPotion;
+    public GameObject speedPotion;
+    public Vector3 potionSpawnRates;
+
+    private bool isPotionSpawnPoint = false;
 
 
     public class SubDungeon
@@ -363,18 +372,9 @@ public class DungeonManager : MonoBehaviour {
                         }
                     }
 
-                    if(Random.Range(0,200) < coinSpawnRate.z){
-					    instance = Instantiate(bigCoin, new Vector3(i, j, 0f), Quaternion.identity, coinsContainer.transform) as GameObject;
-					    
-				    }
-                    else if(Random.Range(0,200) < coinSpawnRate.y){
-					    instance = Instantiate(mediumCoin, new Vector3(i, j, 0f), Quaternion.identity, coinsContainer.transform) as GameObject;
-					  
-				    }
-                    else if(Random.Range(0,200) < coinSpawnRate.x){
-					    instance = Instantiate(smallCoin, new Vector3(i, j, 0f), Quaternion.identity, coinsContainer.transform) as GameObject;
-					   
-				    }
+                    GenerateCoins(new Vector3(i, j, 0f));
+                    GeneratePotions(new Vector3(i, j, 0f));
+                   
                 }
             }
             roomCount++;
@@ -431,6 +431,14 @@ public class DungeonManager : MonoBehaviour {
         }
 	}
 
+    private void CleanPotions(){
+        GameObject potionSpawner = potionsContainer;
+	    foreach (Transform child in potionSpawner.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+	}
+
     private void SpawnPlayer(SubDungeon subDungeon)
     {
     	player.transform.position = playerPosition;
@@ -452,38 +460,57 @@ public class DungeonManager : MonoBehaviour {
         }
 	}
 
-/* 
-	public void GenerateCoins()
+
+	public void GenerateCoins(Vector3 position)
     {
-		
-		
-   
-		foreach(var tile in tilePositions){
-            GameObject instance = Instantiate(smallCoin, tile.transform.position, Quaternion.identity, coinsContainer.transform) as GameObject;
-        
-			if (tile == mmTile){
-				 if(Random.Range(0,100) < coinSpawnRate.x){
-					 GameObject instance = Instantiate(smallCoin, tile.transform.position, Quaternion.identity) as GameObject;
-					 instance.transform.SetParent(transform);
-				 }
-				 if(Random.Range(0,100) < coinSpawnRate.y){
-					 GameObject instance = Instantiate(mediumCoin, tile.transform.position, Quaternion.identity) as GameObject;
-					 instance.transform.SetParent(transform);
-				 }
-				 if(Random.Range(0,100) < coinSpawnRate.z){
-					 GameObject instance = Instantiate(bigCoin, tile.transform.position, Quaternion.identity) as GameObject;
-					 instance.transform.SetParent(transform);
-				 }                                                                                                                       
-			}
-			
+        int i = Random.Range(0,999);
+
+		if(i < coinSpawnRates.z){
+			GameObject instance = Instantiate(bigCoin, position, Quaternion.identity, coinsContainer.transform) as GameObject;
+			 isPotionSpawnPoint = false;		    
 		}
+        else if(i < coinSpawnRates.y){
+			GameObject instance= Instantiate(mediumCoin, position, Quaternion.identity, coinsContainer.transform) as GameObject;
+			 isPotionSpawnPoint = false;		  
+        }
+        else if(i < coinSpawnRates.x){
+			GameObject instance = Instantiate(smallCoin, position, Quaternion.identity, coinsContainer.transform) as GameObject;
+			 isPotionSpawnPoint = false;	   
+        }else{
+            isPotionSpawnPoint = true;
+        }
+        
+    }
+
+    public void GeneratePotions(Vector3 position)
+    {
+        if(isPotionSpawnPoint){
+            int i = Random.Range(0,999);
+
+            if(i > 999 - healPotionSpawnRate){
+            GameObject instance = Instantiate(healPotion, position, Quaternion.identity, potionsContainer.transform) as GameObject;
+            }
+
+            if(i< potionSpawnRates.x){
+                GameObject instance = Instantiate(attackBoostPotion, position, Quaternion.identity,  potionsContainer.transform) as GameObject;
+            }
+            else if(i> potionSpawnRates.x && i < potionSpawnRates.x + potionSpawnRates.y){
+                GameObject instance= Instantiate(shieldPotion, position, Quaternion.identity,  potionsContainer.transform) as GameObject;
+            }
+            else if( i > potionSpawnRates.x + potionSpawnRates.y && i < potionSpawnRates.x + potionSpawnRates.y + potionSpawnRates.z){
+                GameObject instance = Instantiate(speedPotion, position, Quaternion.identity,  potionsContainer.transform) as GameObject;
+                
+            }
+        }
+        
         
 	}
-*/
+
     public void GenerateDungeon()
     {
         CleanDungeon();
         CleanCoins();
+        CleanPotions();
         roomCount = 0;
 
         SubDungeon rootDungeon = new SubDungeon(new Rect(0, 0, rows, columns));
@@ -498,8 +525,6 @@ public class DungeonManager : MonoBehaviour {
         SpawnPlayer(rootDungeon);
 
         SpawnEnemies (rootDungeon);
-
-        //GenerateCoins();
     }
 
 
