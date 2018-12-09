@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 enum PlayerDungeonStatus
 {
 	Normal,
 }
 
-public class PlayerController_2D : MonoBehaviour {
+public class PlayerController_2D : NetworkBehaviour {
 
 	public float moveSpeed;
 	public Animator anim_2d;
@@ -28,50 +29,53 @@ public class PlayerController_2D : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		
+		//if (this.isLocalPlayer){
+			isMoving = false;
+			float V = Input.GetAxis ("Vertical");
+			float H = Input.GetAxis ("Horizontal");
 
-		isMoving = false;
-		float V = Input.GetAxis ("Vertical");
-		float H = Input.GetAxis ("Horizontal");
-
-		if (Input.GetAxis ("Horizontal") > 0.2f || Input.GetAxis ("Horizontal") < -0.2f) {
-            if (H > 0.2f) H = 1;
-            if (H < -0.2f) H = -1;
-			transform.position += (new Vector3 (H * moveSpeed * Time.deltaTime, 0.0f, 0.0f));
-			isMoving = true;
-			lastMove = new Vector2 (H, 0.0f);
-		}
-
-		if (Input.GetAxis ("Vertical") > 0.2f || Input.GetAxis ("Vertical") < -0.2f) {
-            if (V > 0.2f) V = 1;
-            if (V < -0.2f) V = -1;
-			transform.position += (new Vector3 (0.0f, V * moveSpeed * Time.deltaTime, 0.0f));
-			isMoving = true;
-			lastMove = new Vector2 (0.0f,V);
-		}
-
-		if (Input.GetKeyDown (KeyCode.Space) && !isAttacking) {
-			isAttacking = true;
-			anim_2d.SetBool ("IsAttacking", isAttacking);
-			attackTimer = atkCooldown;
-		} 
-
-		if (isAttacking) {
-			if (attackTimer > 0) {
-				attackTimer -= Time.deltaTime;
-			} else {
-				isAttacking = false;
-				anim_2d.SetBool ("IsAttacking", isAttacking);
+			if (Input.GetAxis ("Horizontal") > 0.2f || Input.GetAxis ("Horizontal") < -0.2f) {
+				if (H > 0.2f) H = 1;
+				if (H < -0.2f) H = -1;
+				transform.position += (new Vector3 (H * moveSpeed * Time.deltaTime, 0.0f, 0.0f));
+				isMoving = true;
+				lastMove = new Vector2 (H, 0.0f);
 			}
 
-		}
+			if (Input.GetAxis ("Vertical") > 0.2f || Input.GetAxis ("Vertical") < -0.2f) {
+				if (V > 0.2f) V = 1;
+				if (V < -0.2f) V = -1;
+				transform.position += (new Vector3 (0.0f, V * moveSpeed * Time.deltaTime, 0.0f));
+				isMoving = true;
+				lastMove = new Vector2 (0.0f,V);
+			}
 
-		anim_2d.SetFloat ("Horizontal", H);
-		anim_2d.SetFloat ("Vertical",V);
-		anim_2d.SetFloat ("LastHorizontal", lastMove.x);
-		anim_2d.SetFloat ("LastVertical", lastMove.y);
-		anim_2d.SetBool ("IsMoving", isMoving);
+			if (Input.GetKeyDown (KeyCode.Space) && !isAttacking) {
+				isAttacking = true;
+				anim_2d.SetBool ("IsAttacking", isAttacking);
+				attackTimer = atkCooldown;
+			} 
+
+			if (isAttacking) {
+				if (attackTimer > 0) {
+					attackTimer -= Time.deltaTime;
+				} else {
+					isAttacking = false;
+					anim_2d.SetBool ("IsAttacking", isAttacking);
+				}
+
+			}
+
+			anim_2d.SetFloat ("Horizontal", H);
+			anim_2d.SetFloat ("Vertical",V);
+			anim_2d.SetFloat ("LastHorizontal", lastMove.x);
+			anim_2d.SetFloat ("LastVertical", lastMove.y);
+			anim_2d.SetBool ("IsMoving", isMoving);
 
 
+		//}
+		
 	}
 
 	/*public void Move()
