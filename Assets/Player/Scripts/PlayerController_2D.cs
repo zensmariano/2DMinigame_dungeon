@@ -29,7 +29,6 @@ public class PlayerController_2D : NetworkBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
 		//if (this.isLocalPlayer){
 			isMoving = false;
 			float V = Input.GetAxis ("Vertical");
@@ -72,10 +71,7 @@ public class PlayerController_2D : NetworkBehaviour {
 			anim_2d.SetFloat ("LastHorizontal", lastMove.x);
 			anim_2d.SetFloat ("LastVertical", lastMove.y);
 			anim_2d.SetBool ("IsMoving", isMoving);
-
-
 		//}
-		
 	}
 
 	/*public void Move()
