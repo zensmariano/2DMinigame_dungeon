@@ -74,6 +74,27 @@ public class PlayerController_2D : MonoBehaviour {
 
 	}
 
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.gameObject.CompareTag ("SmallCoin")) {
+
+			ScoreScript2D.biriCoinCount += 1;
+			Destroy (other.gameObject);
+		}
+		if (other.gameObject.CompareTag ("MediumCoin")) {
+
+			ScoreScript2D.biriCoinCount += 5;
+			Destroy (other.gameObject);
+		}
+		if (other.gameObject.CompareTag ("BigCoin")) {
+
+			ScoreScript2D.biriCoinCount += 10;
+			Destroy (other.gameObject);
+		}
+	}
+
+
+
 	/*public void Move()
 	{
 		transform.Translate (moveDirection * moveSpeed * Time.deltaTime);

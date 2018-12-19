@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4190342254314256}
   - component: {fileID: 212920094154849608}
   - component: {fileID: 61555658196372384}
-  - component: {fileID: 114947408085877806}
+  - component: {fileID: 114281739063809920}
   m_Layer: 0
   m_Name: Speed
   m_TagString: SpeedPotion
@@ -67,7 +67,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.16, y: 0.16}
   m_EdgeRadius: 0
---- !u!114 &114947408085877806
+--- !u!114 &114281739063809920
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,14 +75,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1316877630371438}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3b726dfb79db5649a1a93b141f86514, type: 3}
+  m_Script: {fileID: 11500000, guid: 06005a7504fc355448c46d4f249db086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedBoost: 1
-  shieldBoost: 0
-  healBoost: 0
-  attackBoost: 0
-  powerUpDuration: 5
 --- !u!212 &212920094154849608
 SpriteRenderer:
   m_ObjectHideFlags: 1

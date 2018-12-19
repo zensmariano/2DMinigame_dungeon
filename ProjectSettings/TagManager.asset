@@ -6,6 +6,13 @@ TagManager:
   tags:
   - EnemySpawner
   - Walkable
+  - HealPotion
+  - AttackPotion
+  - ShieldPotion
+  - SpeedPotion
+  - SmallCoin
+  - MediumCoin
+  - BigCoin
   layers:
   - Default
   - TransparentFX
