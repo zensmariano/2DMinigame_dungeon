@@ -439,9 +439,9 @@ public class DungeonManager : MonoBehaviour {
         }
 	}
 
-    private void SpawnPlayer(SubDungeon subDungeon)
+    private void SendPlayerPosition(SubDungeon subDungeon)
     {
-    	player.transform.position = playerPosition;
+		GameObject.Find ("Network Manager").GetComponent<NetworkManager2D> ().playerPosition = playerPosition;
     }
 
 	private void SpawnEnemies(SubDungeon subDungeon)
@@ -471,7 +471,8 @@ public class DungeonManager : MonoBehaviour {
 		}
         else if(i < coinSpawnRates.y){
 			GameObject instance= Instantiate(mediumCoin, position, Quaternion.identity, coinsContainer.transform) as GameObject;
-			 isPotionSpawnPoint = false;		  
+			 isPotionSpawnPoint = false;
+
         }
         else if(i < coinSpawnRates.x){
 			GameObject instance = Instantiate(smallCoin, position, Quaternion.identity, coinsContainer.transform) as GameObject;
@@ -508,6 +509,7 @@ public class DungeonManager : MonoBehaviour {
 
     public void GenerateDungeon()
     {
+		//Random.InitState ();
         CleanDungeon();
         CleanCoins();
         CleanPotions();
@@ -522,7 +524,7 @@ public class DungeonManager : MonoBehaviour {
 
         UpdateTilemapUsingTreeNode(rootDungeon);
         DrawMap(rootDungeon);
-        SpawnPlayer(rootDungeon);
+		SendPlayerPosition(rootDungeon);
 
         SpawnEnemies (rootDungeon);
     }
