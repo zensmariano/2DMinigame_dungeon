@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4107509671640982}
   - component: {fileID: 212034783065139542}
   - component: {fileID: 61181431144503974}
-  - component: {fileID: 114254532980014058}
+  - component: {fileID: 114763843037688922}
   m_Layer: 0
   m_Name: AttackBoost
   m_TagString: AttackPotion
@@ -67,7 +67,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.16, y: 0.16}
   m_EdgeRadius: 0
---- !u!114 &114254532980014058
+--- !u!114 &114763843037688922
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,14 +75,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1604799326018212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3b726dfb79db5649a1a93b141f86514, type: 3}
+  m_Script: {fileID: 11500000, guid: 76b6c4da82be06347a5182daedc26d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedBoost: 0
-  shieldBoost: 0
-  healBoost: 0
-  attackBoost: 1
-  powerUpDuration: 5
 --- !u!212 &212034783065139542
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -6,6 +6,14 @@ TagManager:
   tags:
   - EnemySpawner
   - Walkable
+  - HealPotion
+  - AttackPotion
+  - ShieldPotion
+  - SpeedPotion
+  - SmallCoin
+  - MediumCoin
+  - BigCoin
+  - SeedGenerator
   layers:
   - Default
   - TransparentFX

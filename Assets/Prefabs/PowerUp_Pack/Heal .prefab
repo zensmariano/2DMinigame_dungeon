@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4899963781002382}
   - component: {fileID: 212472371274217206}
   - component: {fileID: 61145665787932690}
-  - component: {fileID: 114580730374203780}
+  - component: {fileID: 114241377117049690}
   m_Layer: 0
   m_Name: 'Heal '
   m_TagString: HealPotion
@@ -67,7 +67,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.16, y: 0.16}
   m_EdgeRadius: 0
---- !u!114 &114580730374203780
+--- !u!114 &114241377117049690
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,14 +75,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1088012211751600}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3b726dfb79db5649a1a93b141f86514, type: 3}
+  m_Script: {fileID: 11500000, guid: 69b1f3a3269eae74e8be299f33052e12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedBoost: 0
-  shieldBoost: 0
-  healBoost: 1
-  attackBoost: 0
-  powerUpDuration: 5
 --- !u!212 &212472371274217206
 SpriteRenderer:
   m_ObjectHideFlags: 1

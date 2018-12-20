@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class DungeonManager : MonoBehaviour {
+public class DungeonManager : NetworkBehaviour {
 
     [HideInInspector]
     public GameObject tlTile;
@@ -55,6 +56,11 @@ public class DungeonManager : MonoBehaviour {
 
     private bool isPotionSpawnPoint = false;
 
+    [HideInInspector]
+    public int seed;
+
+    public SeedGenerator seed_manager;
+    
 
     public class SubDungeon
     {
@@ -509,7 +515,9 @@ public class DungeonManager : MonoBehaviour {
 
     public void GenerateDungeon()
     {
-		//Random.InitState ();
+        seed_manager.seed_set = true;
+        int seed = seed_manager.seed;
+        Random.InitState(seed);
         CleanDungeon();
         CleanCoins();
         CleanPotions();
@@ -529,9 +537,18 @@ public class DungeonManager : MonoBehaviour {
         SpawnEnemies (rootDungeon);
     }
 
+    
+   
+    public override void OnStartClient()
+    {
+        Random.InitState(seed);
+        GenerateDungeon();
+    }
 
     public void Start()
     {
+        seed_manager.seed_set = true;
+        //
         //player = GameObject.FindGameObjectWithTag("Player");
         GenerateDungeon();
     }
