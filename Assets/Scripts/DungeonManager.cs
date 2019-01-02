@@ -37,7 +37,7 @@ public class DungeonManager : NetworkBehaviour {
     public GameObject slimeEnemiesContainer;
     public int minEnemiesPerRoom;
     public int maxEnemiesPerRoom;
-    private List<Vector3> enemySpawnPoints;
+    private Vector3 enemySpawnPoint;
 
     public GameObject coinsContainer;
     public GameObject smallCoin;
@@ -374,8 +374,9 @@ public class DungeonManager : NetworkBehaviour {
                         //Spawn Points for Enemies
                         else if(roomCount > 0)
                         {
-                            enemySpawnPoints.Add(new Vector3(i, j, 0f));
+                            SpawnEnemies(subDungeon.room);
                         }
+                        
                     }
 
                     GenerateCoins(new Vector3(i, j, 0f));
@@ -450,20 +451,18 @@ public class DungeonManager : NetworkBehaviour {
 		GameObject.Find ("Network Manager").GetComponent<NetworkManager2D> ().playerPosition = playerPosition;
     }
 
-	private void SpawnEnemies(SubDungeon subDungeon)
+	private void SpawnEnemies(Rect room)
     {
-        Vector3 enemyPosition;
         int enemiesInRoom;
         
-        for (int i = 0; i < enemySpawnPoints.Count; i++)
+        enemiesInRoom = Random.Range(minEnemiesPerRoom, maxEnemiesPerRoom);
+        for (int j = 0; j < enemiesInRoom; j++)
         {
-            enemyPosition = enemySpawnPoints[i];
-            enemiesInRoom = Random.Range(minEnemiesPerRoom, maxEnemiesPerRoom);
-            for (int j = 0; j < enemiesInRoom; j++)
-            {
-                GameObject.Instantiate(enemy, enemyPosition, Quaternion.identity, slimeEnemiesContainer.transform);
-            }
+            enemySpawnPoint = new Vector3(Random.Range(room.x + 1, room.x + (room.xMax - room.x) - 1), 
+                                                            Random.Range(room.y + 1, room.y +(room.yMax - room.y) - 1), 0f);
+            GameObject instance = GameObject.Instantiate(enemy, enemySpawnPoint, Quaternion.identity, slimeEnemiesContainer.transform);
         }
+        
 	}
 
 
@@ -495,17 +494,16 @@ public class DungeonManager : NetworkBehaviour {
             int i = Random.Range(0,999);
 
             if(i > 999 - healPotionSpawnRate){
-            GameObject instance = Instantiate(healPotion, position, Quaternion.identity, potionsContainer.transform) as GameObject;
+            GameObject.Instantiate(healPotion, position, Quaternion.identity, potionsContainer.transform);
             }
-
             if(i< potionSpawnRates.x){
-                GameObject instance = Instantiate(attackBoostPotion, position, Quaternion.identity,  potionsContainer.transform) as GameObject;
+                GameObject.Instantiate(attackBoostPotion, position, Quaternion.identity,  potionsContainer.transform);
             }
             else if(i> potionSpawnRates.x && i < potionSpawnRates.x + potionSpawnRates.y){
-                GameObject instance= Instantiate(shieldPotion, position, Quaternion.identity,  potionsContainer.transform) as GameObject;
+                GameObject.Instantiate(shieldPotion, position, Quaternion.identity,  potionsContainer.transform);
             }
             else if( i > potionSpawnRates.x + potionSpawnRates.y && i < potionSpawnRates.x + potionSpawnRates.y + potionSpawnRates.z){
-                GameObject instance = Instantiate(speedPotion, position, Quaternion.identity,  potionsContainer.transform) as GameObject;
+                GameObject.Instantiate(speedPotion, position, Quaternion.identity,  potionsContainer.transform);
                 
             }
         }
@@ -528,13 +526,12 @@ public class DungeonManager : NetworkBehaviour {
         rootDungeon.GenerateMap();
 
         tilePositions = new GameObject[rows, columns];
-        enemySpawnPoints = new List<Vector3>();
 
         UpdateTilemapUsingTreeNode(rootDungeon);
         DrawMap(rootDungeon);
 		SendPlayerPosition(rootDungeon);
 
-        SpawnEnemies (rootDungeon);
+        //SpawnEnemies (rootDungeon);
     }
 
     

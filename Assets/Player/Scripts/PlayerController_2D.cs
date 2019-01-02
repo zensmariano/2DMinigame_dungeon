@@ -27,11 +27,17 @@ public class PlayerController_2D : NetworkBehaviour
 	private float attackTimer = 0;
 	private float atkCooldown = .15f;
 
+	public int attackDamage;
+	public int maxHealth;
+
+	private int health;
+
 
 	// Use this for initialization
 	void Start ()
 	{
 		anim_2d = GetComponent<Animator> ();
+		health = maxHealth;
 	}
 
 	// Update is called once per frame
@@ -73,6 +79,7 @@ public class PlayerController_2D : NetworkBehaviour
 		if (isAttacking) {
 			if (attackTimer > 0) {
 				attackTimer -= Time.deltaTime;
+				DealDamage();
 			} else {
 				isAttacking = false;
 				anim_2d.SetBool ("IsAttacking", isAttacking);
@@ -111,6 +118,15 @@ public class PlayerController_2D : NetworkBehaviour
 			Destroy (other.gameObject);
 		}
 	}
+
+	public void SufferDamage(int damage){
+		health -= damage;
+		Debug.Log(health);
+	}
+
+    public void DealDamage(){
+        
+    }
 
 
 

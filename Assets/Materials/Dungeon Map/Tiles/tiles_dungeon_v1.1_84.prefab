@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212866409961349718}
   m_Layer: 0
   m_Name: tiles_dungeon_v1.1_84
-  m_TagString: Walkable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

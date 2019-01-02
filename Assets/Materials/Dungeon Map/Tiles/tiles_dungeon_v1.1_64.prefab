@@ -20,10 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4774255963094152}
   - component: {fileID: 212536962718232752}
-  - component: {fileID: 68765435016517164}
+  - component: {fileID: 61903411076368702}
+  - component: {fileID: 61052404552157582}
   m_Layer: 0
   m_Name: tiles_dungeon_v1.1_64
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,8 +42,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!68 &68765435016517164
-EdgeCollider2D:
+--- !u!61 &61052404552157582
+BoxCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -53,12 +54,44 @@ EdgeCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.005001981, y: 0.074980915}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.16, y: 0.16}
+    newSize: {x: 0.16, y: 0.16}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.15020356, y: 0.010038167}
   m_EdgeRadius: 0
-  m_Points:
-  - {x: 0.08071157, y: 0.0783959}
-  - {x: -0.079248324, y: 0.07754302}
-  - {x: -0.07875176, y: -0.08035576}
+--- !u!61 &61903411076368702
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1587727185986678}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.07505045, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.16, y: 0.16}
+    newSize: {x: 0.16, y: 0.16}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.009899095, y: 0.16}
+  m_EdgeRadius: 0
 --- !u!212 &212536962718232752
 SpriteRenderer:
   m_ObjectHideFlags: 1

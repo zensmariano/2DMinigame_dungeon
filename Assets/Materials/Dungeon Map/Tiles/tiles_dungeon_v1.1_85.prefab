@@ -20,10 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4114407685579808}
   - component: {fileID: 212671218026239872}
-  - component: {fileID: 68170027157443484}
+  - component: {fileID: 61312911973661476}
   m_Layer: 0
   m_Name: tiles_dungeon_v1.1_85
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35,14 +35,14 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1493780537761202}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1.304, z: 0}
   m_LocalScale: {x: 6.3, y: 6.3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!68 &68170027157443484
-EdgeCollider2D:
+--- !u!61 &61312911973661476
+BoxCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -53,11 +53,19 @@ EdgeCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.07502298, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.16, y: 0.16}
+    newSize: {x: 0.16, y: 0.16}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.009954035, y: 0.16}
   m_EdgeRadius: 0
-  m_Points:
-  - {x: 0.07875168, y: 0.08035581}
-  - {x: 0.07999998, y: -0.08035579}
 --- !u!212 &212671218026239872
 SpriteRenderer:
   m_ObjectHideFlags: 1

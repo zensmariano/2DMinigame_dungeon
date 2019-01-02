@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 114771309376299604}
   - component: {fileID: 114565560880084478}
   - component: {fileID: 114382180354304574}
+  - component: {fileID: 114409537233601992}
   m_Layer: 0
   m_Name: Slime Enemy
   m_TagString: Untagged
@@ -41,7 +42,7 @@ Transform:
   m_GameObject: {fileID: 1093878086639926}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_LocalScale: {x: 8, y: 8, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -120,6 +121,22 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114409537233601992
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1093878086639926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9c6a8719e70cc54690fca95a940e318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starting_health: 5
+  health: 0
+  stopBeforeRepathing: 1
+  attackCooldown: 1
+  attackDamage: 1
 --- !u!114 &114565560880084478
 MonoBehaviour:
   m_ObjectHideFlags: 1
