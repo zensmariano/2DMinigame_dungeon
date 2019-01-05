@@ -17,6 +17,10 @@ public class PlayerController_2D : NetworkBehaviour
 
 	[HideInInspector] public PlayerID ID;
 	public float moveSpeed;
+	
+	public float V;
+
+	public float H;
 	public Animator anim_2d;
 	private Vector2 moveDirection;
 	private Vector2 lastMove;
@@ -28,6 +32,9 @@ public class PlayerController_2D : NetworkBehaviour
 	private float atkCooldown = .15f;
 
 	public int attackDamage;
+	public int attackRadius;
+
+	private Vector2 attackDirection;
 	public int maxHealth;
 
 	private int health;
@@ -47,8 +54,8 @@ public class PlayerController_2D : NetworkBehaviour
 			return;
 		
 		isMoving = false;
-		float V = Input.GetAxis ("Vertical");
-		float H = Input.GetAxis ("Horizontal");
+		V = Input.GetAxis ("Vertical");
+		H = Input.GetAxis ("Horizontal");
 
 		if (Input.GetAxis ("Horizontal") > 0.2f || Input.GetAxis ("Horizontal") < -0.2f) {
 			if (H > 0.2f)
@@ -79,7 +86,6 @@ public class PlayerController_2D : NetworkBehaviour
 		if (isAttacking) {
 			if (attackTimer > 0) {
 				attackTimer -= Time.deltaTime;
-				DealDamage();
 			} else {
 				isAttacking = false;
 				anim_2d.SetBool ("IsAttacking", isAttacking);
@@ -124,13 +130,44 @@ public class PlayerController_2D : NetworkBehaviour
 		Debug.Log(health);
 	}
 
-    public void DealDamage(){
-        
+    public void DealDamage(List<EnemyController> enemiesInRange){
+		foreach( EnemyController e in enemiesInRange)
+		{
+			if(e.health > 0)
+			e.SufferDamage(attackDamage);
+		}
+		
     }
 
+    void StartAttack()
+    {
+		print("attack");
+
+		Vector2 hv = new Vector2(H,V);
+		attackDirection = (Vector2)transform.position + hv;
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, attackRadius);
+		List<EnemyController> enemiesInRange = new List<EnemyController>();
+		foreach (Collider2D c in hitColliders)
+		{
+			float attackAngle = Vector2.Angle(c.transform.position - this.transform.position, hv);
+			if((attackAngle > 45 || attackAngle > -45) && c.gameObject.CompareTag("Enemy"))
+			{
+				enemiesInRange.Add(c.gameObject.GetComponent<EnemyController>());
+			}
+
+		}
+		if(enemiesInRange.Count > 0)
+		{
+			Debug.Log("dealdamage");
+			DealDamage(enemiesInRange);
+		}
+		
+	}
+            
 
 
-	/*public void Move()
+
+    /*public void Move()
 	{
 		transform.Translate (moveDirection * moveSpeed * Time.deltaTime);
 	}

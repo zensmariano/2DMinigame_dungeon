@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,13 +10,17 @@ public class EnemyController : MonoBehaviour {
 	[HideInInspector]
 	public int health;
 
+    public bool can_attack;
+
     public float stopBeforeRepathing;
     public float attackCooldown;
 
-	Node behaviourTree;
+    Node behaviourTree;
 	Context behaviourState;
 
     private Vector3 lastPosition;
+
+    private PlayerController_2D current_attack_target;
 
     private float stopTimer;
     private float attackTimer;
@@ -104,8 +109,25 @@ public class EnemyController : MonoBehaviour {
 		health -= damage;
 	}
 
-    public void DealDamage(PlayerController_2D player){
-        player.SufferDamage(attackDamage);
+    public void DealDamage(){
+        
+        if(can_attack)
+        {
+            current_attack_target.SufferDamage(attackDamage);
+            SetCanAttackFalse();
+        }
+        
+    }
+
+    void SetCanAttackFalse()
+    {
+        can_attack = false;
+    }
+
+    public void SetCanAttackTrue(PlayerController_2D player)
+    {
+        current_attack_target = player;
+        can_attack = true;
     }
 
 	public float DistanceTo(Vector3 position){

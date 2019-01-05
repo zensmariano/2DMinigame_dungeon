@@ -166,8 +166,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   moveSpeed: 5
+  V: 0
+  H: 0
   anim_2d: {fileID: 95232814535362120}
   attackDamage: 1
+  attackRadius: 1
   maxHealth: 5
 --- !u!114 &114879104773512238
 MonoBehaviour:

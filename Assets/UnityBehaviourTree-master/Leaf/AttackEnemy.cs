@@ -11,7 +11,7 @@ public class AttackEnemy : Leaf
         if (context.enemy == null)
             return NodeStatus.FAILURE;
 
-        context.me.DealDamage(context.enemy);
+        context.me.SetCanAttackTrue(context.enemy);
         context.me.LinkAttackWithAnimator();
         
 

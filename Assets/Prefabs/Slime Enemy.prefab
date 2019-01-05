@@ -29,7 +29,7 @@ GameObject:
   - component: {fileID: 114409537233601992}
   m_Layer: 0
   m_Name: Slime Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,6 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   starting_health: 5
   health: 0
+  can_attack: 0
   stopBeforeRepathing: 1
   attackCooldown: 1
   attackDamage: 1

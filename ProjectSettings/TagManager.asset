@@ -15,6 +15,7 @@ TagManager:
   - BigCoin
   - SeedGenerator
   - Wall
+  - Enemy
   layers:
   - Default
   - TransparentFX
