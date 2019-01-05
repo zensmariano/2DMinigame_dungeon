@@ -17,6 +17,7 @@ public class ShieldScript2D : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.gameObject.CompareTag ("Player")) {
+			other.gameObject.GetComponent<PlayerController_2D>().ShieldPU();
 			Destroy (gameObject);
 		}
 	}
