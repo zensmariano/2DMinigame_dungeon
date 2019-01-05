@@ -18,10 +18,10 @@ public class PlayerController_2D : NetworkBehaviour
 	[HideInInspector] public PlayerID ID;
 	public float moveSpeed;
 	
-	public float V;
-
+	public float V;	
 	public float H;
 	public Animator anim_2d;
+	public LifeUI lifeUI;
 	private Vector2 moveDirection;
 	private Vector2 lastMove;
 	private bool isAttacking;
@@ -44,18 +44,23 @@ public class PlayerController_2D : NetworkBehaviour
 	void Start ()
 	{
 		anim_2d = GetComponent<Animator> ();
+		lifeUI = GetComponent<LifeUI>();
 		health = maxHealth;
 	}
 
 	// Update is called once per frame
 	void Update ()
 	{
+
+		
 		if (!isLocalPlayer)
 			return;
 		
 		isMoving = false;
 		V = Input.GetAxis ("Vertical");
 		H = Input.GetAxis ("Horizontal");
+
+		lifeUI.SetHealth(health);
 
 		if (Input.GetAxis ("Horizontal") > 0.2f || Input.GetAxis ("Horizontal") < -0.2f) {
 			if (H > 0.2f)
@@ -139,6 +144,7 @@ public class PlayerController_2D : NetworkBehaviour
 		
     }
 
+	
     void StartAttack()
     {
 		print("attack");
