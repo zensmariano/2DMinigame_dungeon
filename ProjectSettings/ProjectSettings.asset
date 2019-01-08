@@ -618,9 +618,9 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: 47de4564-270c-4082-9fb2-eb2d7244125d
+  cloudProjectId: 7038d194-dec5-49c4-8673-b7e2119b82f5
   projectName: Dungeons_minigame2D
-  organizationId: tm1998
+  organizationId: wallace-and-biri
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
