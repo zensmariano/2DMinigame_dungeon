@@ -16,7 +16,10 @@ public class PlayerController_2D : NetworkBehaviour
 {
 
 	[HideInInspector] public PlayerID ID;
-	public float moveSpeed;
+	private float moveSpeed;
+	public float normalMoveSpeed;
+
+	private bool isImune;
 	
 	public float V;	
 	public float H;
@@ -31,7 +34,8 @@ public class PlayerController_2D : NetworkBehaviour
 	private float attackTimer = 0;
 	private float atkCooldown = .15f;
 
-	public int attackDamage;
+	public int normalAttackDamage;
+	private int attackDamage;
 	public int attackRadius;
 
 	private Vector2 attackDirection;
@@ -46,6 +50,9 @@ public class PlayerController_2D : NetworkBehaviour
 		anim_2d = GetComponent<Animator> ();
 		lifeUI = GameObject.FindGameObjectWithTag("LifeUI").GetComponent<LifeUI>();
 		health = maxHealth;
+		moveSpeed = normalMoveSpeed;
+		attackDamage = normalAttackDamage;
+		isImune = false;
 		lifeUI.SetHealth(health);
 		lifeUI.Init();
 	}
@@ -172,42 +179,41 @@ public class PlayerController_2D : NetworkBehaviour
 		
 	}
             
-
-
-
-    /*public void Move()
-	{
-		transform.Translate (moveDirection * moveSpeed * Time.deltaTime);
+	public void AttackBoostPU(){
+		StartCoroutine("AttackBoost", 5f);
 	}
 
-	private void GetInput()
-	{
-		float V = Input.GetAxis ("Vertical");s
-		float H = Input.GetAxis ("Horizontal");
-		moveDirection = Vector2.zero;
-
-		if (Input.GetAxis ("Horizontal") > 0.2f || Input.GetAxis ("Horizontal") > -0.2f) {
-			moveDirection += Vector2.right;
-			anim_2d.SetFloat ("Horizontal", H);
-		}
-		if (Input.GetAxis ("Horizontal") < 0.0f) {
-			moveDirection += Vector2.left;
-			anim_2d.SetFloat ("Horizontal", H);
-		}
-		if (Input.GetAxis ("Vertical") > 0.0f) {
-			moveDirection += Vector2.up;
-			anim_2d.SetFloat ("Vertical", V);
-		}
-		if (Input.GetAxis ("Vertical") < 0.0f) {
-			moveDirection += Vector2.down;
-			anim_2d.SetFloat ("Vertical", V);
-		}
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			attackRoutine = StartCoroutine(Attack ());
-		}
+	private IEnumerator AttackBoost(float waitTime){
+		attackDamage = normalAttackDamage * 2;
+		yield return new WaitForSeconds(waitTime);
+		attackDamage = normalAttackDamage;
 	}
-	*/
 
+	public void ShieldPU(){
+		StartCoroutine("Shield", 5f);
+	}
+
+	private IEnumerator Shield(float waitTime){
+		isImune = true;
+		yield return new WaitForSeconds(waitTime);
+		isImune = false;
+	}
+
+	public void SpeedPU(){
+		StartCoroutine("Speed", 5f);
+	}
+
+	private IEnumerator Speed(float waitTime){
+		moveSpeed = normalMoveSpeed * 2;
+		yield return new WaitForSeconds(waitTime);
+		moveSpeed = normalMoveSpeed;
+	}
+
+	public void HealPU(){
+		health = maxHealth;
+	}
+
+	
 
 }
 								

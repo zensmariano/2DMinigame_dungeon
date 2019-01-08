@@ -16,7 +16,7 @@ public class AttackBoostScript2D : MonoBehaviour {
 
 	public void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other.gameObject.CompareTag("Player"){
+		if (other.gameObject.CompareTag("Player")){
 			other.gameObject.GetComponent<PlayerController_2D>().AttackBoostPU();
 			Destroy (gameObject);
 		}

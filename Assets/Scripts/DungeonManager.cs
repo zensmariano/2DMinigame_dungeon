@@ -377,7 +377,7 @@ public class DungeonManager : NetworkBehaviour {
                             if(isServer)
                             {
                                 Debug.Log("merda");
-                                CmdSpawnEnemies(subDungeon.room);
+                                SpawnEnemies(subDungeon.room);
 
                             }
                             
@@ -501,13 +501,7 @@ public class DungeonManager : NetworkBehaviour {
 		GameObject.Find ("Network Manager").GetComponent<NetworkManager2D> ().playerPosition = playerPosition;
     }
 
-    
-   [Command]
-	private void CmdSpawnEnemies(Rect room)
-    {
-        SpawnEnemies(room);
-	}
-
+ 
     private void SpawnEnemies(Rect room)
     {
         int enemiesInRoom;
@@ -518,8 +512,7 @@ public class DungeonManager : NetworkBehaviour {
             enemySpawnPoint = new Vector3(Random.Range(room.x + 1, room.x + (room.xMax - room.x) - 1), 
                                                             Random.Range(room.y + 1, room.y +(room.yMax - room.y) - 1), 0f);
             GameObject instance = GameObject.Instantiate(enemy, enemySpawnPoint, Quaternion.identity, slimeEnemiesContainer.transform);
-            ClientScene.RegisterPrefab(instance);
-            NetworkServer.Spawn(instance);
+            
         }
 
 	}
@@ -573,7 +566,6 @@ public class DungeonManager : NetworkBehaviour {
 
     public void GenerateDungeon()
     {
-        seed_manager.seed_set = true;
         int seed = seed_manager.seed;
         Random.InitState(seed);
         CleanDungeon();
@@ -594,18 +586,15 @@ public class DungeonManager : NetworkBehaviour {
         //SpawnEnemies (rootDungeon);
     }
 
-    
-   public override void OnStartLocalPlayer()
-   {
+    public override void OnStartServer()
+    {
         Random.InitState(seed);
         seed_manager.seed_set = true;
-        GenerateDungeon();
-   }
+    }
     
     public override void OnStartClient()
     {
         Random.InitState(seed);
-        seed_manager.seed_set = true;
         GenerateDungeon();
     }
 }
