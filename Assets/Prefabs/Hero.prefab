@@ -24,9 +24,6 @@ GameObject:
   - component: {fileID: 50709803091533600}
   - component: {fileID: 58240372500827532}
   - component: {fileID: 114787264380277602}
-  - component: {fileID: 114228377377286814}
-  - component: {fileID: 114137958149864358}
-  - component: {fileID: 114879104773512238}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Player
@@ -100,59 +97,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114137958149864358
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1924655379930496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 115
-    i1: 233
-    i2: 112
-    i3: 55
-    i4: 6
-    i5: 111
-    i6: 208
-    i7: 244
-    i8: 234
-    i9: 138
-    i10: 146
-    i11: 68
-    i12: 12
-    i13: 96
-    i14: 22
-    i15: 80
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 1
---- !u!114 &114228377377286814
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1924655379930496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TransformSyncMode: 1
-  m_SendInterval: 0.09090909
-  m_SyncRotationAxis: 3
-  m_RotationSyncCompression: 0
-  m_SyncSpin: 0
-  m_MovementTheshold: 0.001
-  m_VelocityThreshold: 0.0001
-  m_SnapThreshold: 0.0000001
-  m_InterpolateRotation: 1
-  m_InterpolateMovement: 100
 --- !u!114 &114787264380277602
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -174,25 +118,6 @@ MonoBehaviour:
   normalAttackDamage: 1
   attackRadius: 1
   maxHealth: 5
---- !u!114 &114879104773512238
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1924655379930496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Animator: {fileID: 95232814535362120}
-  m_ParameterSendBits: 63
-  param0: 
-  param1: 
-  param2: 
-  param3: 
-  param4: 
-  param5: 
 --- !u!212 &212758696946911572
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Networking;
+using UnityEngine;  
 
-public class DungeonManager : NetworkBehaviour {
+public class DungeonManager : MonoBehaviour {
 
     [HideInInspector]
     public GameObject tlTile;
@@ -57,11 +56,6 @@ public class DungeonManager : NetworkBehaviour {
     public Vector3 potionSpawnRates;
 
     private bool isPotionSpawnPoint = false;
-
-    [HideInInspector]
-    public int seed;
-
-    public SeedGenerator seed_manager;
     
 
     public class SubDungeon
@@ -368,11 +362,20 @@ public class DungeonManager : NetworkBehaviour {
                     GameObject instance = Instantiate(tile, new Vector3(i, j, 0f), Quaternion.identity) as GameObject;
                     instance.transform.SetParent(transform);
                     tilePositions[i, j] = instance;
-                    
-                    if (roomCount == 0){
-                        Vector3 playerPos = new Vector3((int)(subDungeon.room.x + ((subDungeon.room.xMax - subDungeon.room.x) / 2)), (int)(subDungeon.room.y + ((subDungeon.room.yMax -subDungeon.room.y) / 2)), 0f);
-                        playerPosition = playerPos;
-                    } 
+
+					if (i == (int)(subDungeon.room.x + ((subDungeon.room.xMax - subDungeon.room.x) / 2)) && j == (int)(subDungeon.room.y + ((subDungeon.room.yMax -subDungeon.room.y) / 2)))
+					{
+                        //Player Spawn Points
+                        if (roomCount == 0) 
+                        {
+                            playerPosition = new Vector3(i, j, 0f);
+                            SendPlayerPosition(subDungeon);
+                        }
+                        //Spawn Points for Enemies
+                        else if(roomCount > 0)
+                        {
+                            SpawnEnemies(subDungeon.room);
+                        }
                         
                     GenerateCoins(new Vector3(i, j, 0f));
                     GeneratePotions(new Vector3(i, j, 0f));
@@ -487,7 +490,8 @@ public class DungeonManager : NetworkBehaviour {
 
     private void SendPlayerPosition(SubDungeon subDungeon)
     {
-		GameObject.Find ("Network Manager").GetComponent<NetworkManager2D> ().playerPosition = playerPosition;
+        GameObject instance = GameObject.Instantiate(player, playerPosition, Quaternion.identity);
+		//GameObject.Find ("Network Manager").GetComponent<NetworkManager2D> ().playerPosition = playerPosition;
     }
 
     [Command]
@@ -561,8 +565,6 @@ public class DungeonManager : NetworkBehaviour {
 
     public void GenerateDungeon()
     {
-        int seed = seed_manager.seed;
-        Random.InitState(seed);
         CleanDungeon();
         CleanCoins();
         CleanPotions();
@@ -576,8 +578,8 @@ public class DungeonManager : NetworkBehaviour {
 
         UpdateTilemapUsingTreeNode(rootDungeon);
         DrawMap(rootDungeon);
-		SendPlayerPosition(rootDungeon);
-        subdungeon_for_player = rootDungeon;
+		//SendPlayerPosition(rootDungeon);
+
         //SpawnEnemies (rootDungeon);
     }
 
@@ -589,10 +591,15 @@ public class DungeonManager : NetworkBehaviour {
         seed_manager.seed_set = true;
     }
     
-    public override void OnStartClient()
+   
+
+    public void Start()
     {
-        Random.InitState(seed);
+
+        //
+        //player = GameObject.FindGameObjectWithTag("Player");
         GenerateDungeon();
     }
+    
 }
 

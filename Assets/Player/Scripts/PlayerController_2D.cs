@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
 public enum PlayerID{
 	ONE = 1,
 	TWO
@@ -14,7 +15,7 @@ enum PlayerDungeonStatus
 	Normal,
 }
 
-public class PlayerController_2D : NetworkBehaviour
+public class PlayerController_2D : MonoBehaviour
 {
 
 	[HideInInspector] public PlayerID ID;
@@ -80,7 +81,7 @@ public class PlayerController_2D : NetworkBehaviour
 		V = Input.GetAxis ("Vertical");
 		H = Input.GetAxis ("Horizontal");
 
-		lifeUI.SetHealth(health);
+		//lifeUI.SetHealth(health);
 
 		if (Input.GetAxis ("Horizontal") > 0.2f || Input.GetAxis ("Horizontal") < -0.2f) {
 			if (H > 0.2f)
@@ -138,7 +139,6 @@ public class PlayerController_2D : NetworkBehaviour
 		roomCount = 0;
 		AddEnemies(subdungeon);
      }
-
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
