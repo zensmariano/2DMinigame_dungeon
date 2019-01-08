@@ -49,10 +49,9 @@ public class EnemyController : NetworkBehaviour {
 	
 	Node CreateBehaviourTree()
     {   
-        Selector lifeOrDeath = new Selector("lifeOrDeath",
-            new IsAlive(),
-            new Inverter(new DeleteSelf()));
-        
+        Sequence lifeOrDeath = new Sequence("lifeOrDeath",
+            new IsAlive());
+
         Sequence randomWalk = new Sequence("randomWalk",
             new SetRandomDestination(),
             new Inverter(new Succeeder(new Move())));
@@ -133,10 +132,6 @@ public class EnemyController : NetworkBehaviour {
 
 	public float DistanceTo(Vector3 position){
 		return Vector3.Distance(this.transform.position, position);
-	}
-
-	public void DeleteSelf(){
-		GameObject.Destroy(this);
 	}
 
     public Vector3 GetLastPosition(){
