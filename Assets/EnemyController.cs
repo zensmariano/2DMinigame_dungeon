@@ -166,9 +166,13 @@ public class EnemyController : NetworkBehaviour {
     }
 
     public void LinkAttackWithAnimator(){
+        Vector3 movementVector = (current_attack_target.transform.position - transform.position).normalized;
         transform.GetComponent<Animator>().SetBool("IsMoving", false);
+        transform.GetComponent<Animator>().SetFloat("Horizontal", movementVector.x);
+        transform.GetComponent<Animator>().SetFloat("Vertical", movementVector.y);
 
         if (attackTimer > attackCooldown){
+            
             transform.GetComponent<Animator>().SetBool("IsAttacking", true);
             attackTimer = 0;
         }else{
