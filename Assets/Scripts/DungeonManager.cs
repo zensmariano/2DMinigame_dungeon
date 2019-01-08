@@ -500,7 +500,6 @@ public class DungeonManager : NetworkBehaviour {
     public void RpcSpawnEnemies(Rect room)
     {
         int enemiesInRoom;
-        Debug.Log("merda");
         enemiesInRoom = Random.Range(minEnemiesPerRoom, maxEnemiesPerRoom);
         for (int j = 0; j < enemiesInRoom; j++)
         {

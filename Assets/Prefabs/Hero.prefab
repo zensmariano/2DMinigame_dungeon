@@ -170,6 +170,7 @@ MonoBehaviour:
   H: 0
   anim_2d: {fileID: 95232814535362120}
   lifeUI: {fileID: 0}
+  playerDestroyCooldown: 3
   normalAttackDamage: 1
   attackRadius: 1
   maxHealth: 5

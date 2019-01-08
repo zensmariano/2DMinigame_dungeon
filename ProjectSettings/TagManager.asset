@@ -17,6 +17,7 @@ TagManager:
   - Wall
   - Enemy
   - LifeUI
+  - Died
   layers:
   - Default
   - TransparentFX

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum PlayerID{
 	ONE = 1,
@@ -25,6 +27,10 @@ public class PlayerController_2D : NetworkBehaviour
 	public float H;
 	public Animator anim_2d;
 	public LifeUI lifeUI;
+
+	private float timerPlayerDestroy;
+
+	public float playerDestroyCooldown;
 
 	public DungeonManager.SubDungeon subdungeon;
 	private Vector2 moveDirection;
@@ -65,7 +71,7 @@ public class PlayerController_2D : NetworkBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-
+		
 		
 		if (!isLocalPlayer)
 			return;
@@ -110,6 +116,12 @@ public class PlayerController_2D : NetworkBehaviour
 				anim_2d.SetBool ("IsAttacking", isAttacking);
 			}
 
+		}
+		
+		if(health <= 0)
+		{
+			timerPlayerDestroy += Time.fixedDeltaTime;
+			PlayerIsDead();
 		}
 
 		anim_2d.SetFloat ("Horizontal", H);
@@ -171,12 +183,10 @@ public class PlayerController_2D : NetworkBehaviour
 	{
 		if (sd.IsLeaf())
         {
-			Debug.Log("merda3");
 			if(roomCount > 0)
 			{
 				if(isLocalPlayer)
             	{
-                	Debug.Log("merda2");
 					DungeonManager manager = GameObject.Find("Board").GetComponent<DungeonManager>();
                 	manager.CmdPlayerReady(sd.room);
 			
@@ -256,6 +266,20 @@ public class PlayerController_2D : NetworkBehaviour
 
 	public void HealPU(){
 		health = maxHealth;
+	}
+
+	public void	PlayerIsDead()
+	{
+		
+
+		//AlphaOut ();
+		GameObject.FindGameObjectWithTag("Died").GetComponent<Text>().CrossFadeAlpha(1,0,true);
+
+		if (timerPlayerDestroy > playerDestroyCooldown) {
+			Destroy (this.gameObject);
+			Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.name);
+		}
 	}
 
 	
