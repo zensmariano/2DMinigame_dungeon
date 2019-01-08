@@ -25,6 +25,8 @@ public class PlayerController_2D : NetworkBehaviour
 	public float H;
 	public Animator anim_2d;
 	public LifeUI lifeUI;
+
+	public DungeonManager.SubDungeon subdungeon;
 	private Vector2 moveDirection;
 	private Vector2 lastMove;
 	private bool isAttacking;
@@ -42,6 +44,9 @@ public class PlayerController_2D : NetworkBehaviour
 	public int maxHealth;
 
 	private int health;
+	
+	private int roomCount;
+
 
 
 	// Use this for initialization
@@ -116,7 +121,10 @@ public class PlayerController_2D : NetworkBehaviour
 
 	public override void OnStartLocalPlayer()
      {
-         Camera.main.GetComponent<CameraDungeon>().setTarget(gameObject.transform);
+        Camera.main.GetComponent<CameraDungeon>().setTarget(gameObject.transform);
+		SetPlayerSubDungeon();
+		roomCount = 0;
+		AddEnemies(subdungeon);
      }
 
 
@@ -153,6 +161,43 @@ public class PlayerController_2D : NetworkBehaviour
 		
     }
 
+	public void SetPlayerSubDungeon()
+	{
+		DungeonManager.SubDungeon sd = GameObject.Find("Board").GetComponent<DungeonManager>().subdungeon_for_player;
+		subdungeon = sd;	
+	}
+
+	public void AddEnemies(DungeonManager.SubDungeon sd)
+	{
+		if (sd.IsLeaf())
+        {
+			Debug.Log("merda3");
+			if(roomCount > 0)
+			{
+				if(isLocalPlayer)
+            	{
+                	Debug.Log("merda2");
+					DungeonManager manager = GameObject.Find("Board").GetComponent<DungeonManager>();
+                	manager.CmdPlayerReady(sd.room);
+			
+            	}
+			}			
+            
+            roomCount++;
+        }
+        else
+        {
+            if (sd.bottomLeft != null)
+                AddEnemies(sd.bottomLeft);
+            if (sd.bottomRight != null)
+                AddEnemies(sd.bottomRight);
+            if (sd.topLeft != null)
+                AddEnemies(sd.topLeft);
+            if (sd.topRight != null)
+                AddEnemies(sd.topRight);
+        }
+	
+	}
 	
     void StartAttack()
     {

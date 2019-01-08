@@ -24,6 +24,8 @@ public class DungeonManager : NetworkBehaviour {
     [HideInInspector]
     public GameObject brTile;
 
+    public SubDungeon subdungeon_for_player;
+
 
     public int rows, columns;
     public int minSize, maxSize;
@@ -366,25 +368,12 @@ public class DungeonManager : NetworkBehaviour {
                     GameObject instance = Instantiate(tile, new Vector3(i, j, 0f), Quaternion.identity) as GameObject;
                     instance.transform.SetParent(transform);
                     tilePositions[i, j] = instance;
-
-					if (i == (int)(subDungeon.room.x + ((subDungeon.room.xMax - subDungeon.room.x) / 2)) && j == (int)(subDungeon.room.y + ((subDungeon.room.yMax -subDungeon.room.y) / 2)))
-					{
-                        //Player Spawn Points
-                        if (roomCount == 0) playerPosition = new Vector3(i, j, 0f);
-                        //Spawn Points for Enemies
-                        else if(roomCount > 0)
-                        {
-                            if(isServer)
-                            {
-                                Debug.Log("merda");
-                                SpawnEnemies(subDungeon.room);
-
-                            }
-                            
-                        }
+                    
+                    if (roomCount == 0){
+                        Vector3 playerPos = new Vector3((int)(subDungeon.room.x + ((subDungeon.room.xMax - subDungeon.room.x) / 2)), (int)(subDungeon.room.y + ((subDungeon.room.yMax -subDungeon.room.y) / 2)), 0f);
+                        playerPosition = playerPos;
+                    } 
                         
-                    }
-
                     GenerateCoins(new Vector3(i, j, 0f));
                     GeneratePotions(new Vector3(i, j, 0f));
                    
@@ -501,18 +490,25 @@ public class DungeonManager : NetworkBehaviour {
 		GameObject.Find ("Network Manager").GetComponent<NetworkManager2D> ().playerPosition = playerPosition;
     }
 
- 
-    private void SpawnEnemies(Rect room)
+    [Command]
+ public void CmdPlayerReady(Rect room)
+ {
+     RpcSpawnEnemies(room);
+ }
+
+    [ClientRpc]
+    public void RpcSpawnEnemies(Rect room)
     {
         int enemiesInRoom;
-        
+        Debug.Log("merda");
         enemiesInRoom = Random.Range(minEnemiesPerRoom, maxEnemiesPerRoom);
         for (int j = 0; j < enemiesInRoom; j++)
         {
+            
             enemySpawnPoint = new Vector3(Random.Range(room.x + 1, room.x + (room.xMax - room.x) - 1), 
                                                             Random.Range(room.y + 1, room.y +(room.yMax - room.y) - 1), 0f);
             GameObject instance = GameObject.Instantiate(enemy, enemySpawnPoint, Quaternion.identity, slimeEnemiesContainer.transform);
-            
+            NetworkServer.Spawn(instance);
         }
 
 	}
@@ -582,9 +578,11 @@ public class DungeonManager : NetworkBehaviour {
         UpdateTilemapUsingTreeNode(rootDungeon);
         DrawMap(rootDungeon);
 		SendPlayerPosition(rootDungeon);
-
+        subdungeon_for_player = rootDungeon;
         //SpawnEnemies (rootDungeon);
     }
+
+
 
     public override void OnStartServer()
     {
