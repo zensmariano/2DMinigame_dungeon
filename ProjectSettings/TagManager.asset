@@ -16,6 +16,7 @@ TagManager:
   - SeedGenerator
   - Wall
   - Enemy
+  - LifeUI
   layers:
   - Default
   - TransparentFX

@@ -14,7 +14,7 @@ public class NetworkManager2D : NetworkManager {
 
 		//Vector2 spawnPosition = GetRandomSpawnPosition ();
 		GameObject player = (GameObject) Instantiate (playerPrefab, playerPosition, Quaternion.identity);
-
+		
 		NetworkServer.AddPlayerForConnection (conn, player, playerControllerId);
 	}
 

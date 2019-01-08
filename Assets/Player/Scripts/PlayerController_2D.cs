@@ -44,8 +44,10 @@ public class PlayerController_2D : NetworkBehaviour
 	void Start ()
 	{
 		anim_2d = GetComponent<Animator> ();
-		lifeUI = GetComponent<LifeUI>();
+		lifeUI = GameObject.FindGameObjectWithTag("LifeUI").GetComponent<LifeUI>();
 		health = maxHealth;
+		lifeUI.SetHealth(health);
+		lifeUI.Init();
 	}
 
 	// Update is called once per frame
