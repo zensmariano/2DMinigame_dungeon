@@ -23,10 +23,7 @@ GameObject:
   - component: {fileID: 95591559329758394}
   - component: {fileID: 58687771212776672}
   - component: {fileID: 50290581491210104}
-  - component: {fileID: 114374470968375428}
-  - component: {fileID: 114514776461625148}
   - component: {fileID: 114871505225484154}
-  - component: {fileID: 114199070208286676}
   m_Layer: 0
   m_Name: Slime Enemy
   m_TagString: Enemy
@@ -100,78 +97,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114199070208286676
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1355589077617660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Animator: {fileID: 95591559329758394}
-  m_ParameterSendBits: 63
-  param0: 
-  param1: 
-  param2: 
-  param3: 
-  param4: 
-  param5: 
---- !u!114 &114374470968375428
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1355589077617660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 84
-    i1: 165
-    i2: 136
-    i3: 234
-    i4: 206
-    i5: 246
-    i6: 6
-    i7: 196
-    i8: 121
-    i9: 31
-    i10: 101
-    i11: 219
-    i12: 25
-    i13: 169
-    i14: 12
-    i15: 207
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
---- !u!114 &114514776461625148
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1355589077617660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TransformSyncMode: 2
-  m_SendInterval: 0.1
-  m_SyncRotationAxis: 3
-  m_RotationSyncCompression: 0
-  m_SyncSpin: 0
-  m_MovementTheshold: 0.001
-  m_VelocityThreshold: 0.0001
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
 --- !u!114 &114871505225484154
 MonoBehaviour:
   m_ObjectHideFlags: 1

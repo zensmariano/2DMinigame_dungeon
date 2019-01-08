@@ -67,15 +67,14 @@ public class PlayerController_2D : MonoBehaviour
 		isImune = false;
 		lifeUI.SetHealth(health);
 		lifeUI.Init();
+        Camera.main.GetComponent<CameraDungeon>().setTarget(gameObject.transform);
 	}
 
 	// Update is called once per frame
 	void Update ()
 	{
 		
-		
-		if (!isLocalPlayer)
-			return;
+	
 		
 		isMoving = false;
 		V = Input.GetAxis ("Vertical");
@@ -130,15 +129,9 @@ public class PlayerController_2D : MonoBehaviour
 		anim_2d.SetFloat ("LastHorizontal", lastMove.x);
 		anim_2d.SetFloat ("LastVertical", lastMove.y);
 		anim_2d.SetBool ("IsMoving", isMoving);
+		lifeUI.SetHealth(health);
 	}
 
-	public override void OnStartLocalPlayer()
-     {
-        Camera.main.GetComponent<CameraDungeon>().setTarget(gameObject.transform);
-		SetPlayerSubDungeon();
-		roomCount = 0;
-		AddEnemies(subdungeon);
-     }
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
@@ -173,41 +166,6 @@ public class PlayerController_2D : MonoBehaviour
 		
     }
 
-	public void SetPlayerSubDungeon()
-	{
-		DungeonManager.SubDungeon sd = GameObject.Find("Board").GetComponent<DungeonManager>().subdungeon_for_player;
-		subdungeon = sd;	
-	}
-
-	public void AddEnemies(DungeonManager.SubDungeon sd)
-	{
-		if (sd.IsLeaf())
-        {
-			if(roomCount > 0)
-			{
-				if(isLocalPlayer)
-            	{
-					DungeonManager manager = GameObject.Find("Board").GetComponent<DungeonManager>();
-                	manager.CmdPlayerReady(sd.room);
-			
-            	}
-			}			
-            
-            roomCount++;
-        }
-        else
-        {
-            if (sd.bottomLeft != null)
-                AddEnemies(sd.bottomLeft);
-            if (sd.bottomRight != null)
-                AddEnemies(sd.bottomRight);
-            if (sd.topLeft != null)
-                AddEnemies(sd.topLeft);
-            if (sd.topRight != null)
-                AddEnemies(sd.topRight);
-        }
-	
-	}
 	
     void StartAttack()
     {

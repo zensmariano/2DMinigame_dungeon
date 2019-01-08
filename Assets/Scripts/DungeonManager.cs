@@ -376,6 +376,7 @@ public class DungeonManager : MonoBehaviour {
                         {
                             SpawnEnemies(subDungeon.room);
                         }
+                    }
                         
                     GenerateCoins(new Vector3(i, j, 0f));
                     GeneratePotions(new Vector3(i, j, 0f));
@@ -494,14 +495,8 @@ public class DungeonManager : MonoBehaviour {
 		//GameObject.Find ("Network Manager").GetComponent<NetworkManager2D> ().playerPosition = playerPosition;
     }
 
-    [Command]
- public void CmdPlayerReady(Rect room)
- {
-     RpcSpawnEnemies(room);
- }
 
-    [ClientRpc]
-    public void RpcSpawnEnemies(Rect room)
+    public void SpawnEnemies(Rect room)
     {
         int enemiesInRoom;
         enemiesInRoom = Random.Range(minEnemiesPerRoom, maxEnemiesPerRoom);
@@ -511,7 +506,6 @@ public class DungeonManager : MonoBehaviour {
             enemySpawnPoint = new Vector3(Random.Range(room.x + 1, room.x + (room.xMax - room.x) - 1), 
                                                             Random.Range(room.y + 1, room.y +(room.yMax - room.y) - 1), 0f);
             GameObject instance = GameObject.Instantiate(enemy, enemySpawnPoint, Quaternion.identity, slimeEnemiesContainer.transform);
-            NetworkServer.Spawn(instance);
         }
 
 	}
@@ -582,16 +576,6 @@ public class DungeonManager : MonoBehaviour {
 
         //SpawnEnemies (rootDungeon);
     }
-
-
-
-    public override void OnStartServer()
-    {
-        Random.InitState(seed);
-        seed_manager.seed_set = true;
-    }
-    
-   
 
     public void Start()
     {
