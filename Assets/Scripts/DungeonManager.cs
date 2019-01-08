@@ -374,7 +374,13 @@ public class DungeonManager : NetworkBehaviour {
                         //Spawn Points for Enemies
                         else if(roomCount > 0)
                         {
-                            SpawnEnemies(subDungeon.room);
+                            if(isServer)
+                            {
+                                Debug.Log("merda");
+                                CmdSpawnEnemies(subDungeon.room);
+
+                            }
+                            
                         }
                         
                     }
@@ -396,6 +402,50 @@ public class DungeonManager : NetworkBehaviour {
                 DrawMap(subDungeon.topLeft);
             if (subDungeon.topRight != null)
                 DrawMap(subDungeon.topRight);
+        }
+
+        foreach (Rect hallway in subDungeon.hallways)
+        {
+            for (int i = (int)hallway.x; i < hallway.xMax; i++)
+            {
+                for (int j = (int)hallway.y; j < hallway.yMax; j++)
+                {
+                    var tile = GetTileByNeihbors(i, j);
+                    GameObject instance = Instantiate(tile, new Vector3(i, j, 0f), Quaternion.identity) as GameObject;
+                    instance.transform.SetParent(transform);
+                    tilePositions[i, j] = instance;
+                }
+            }
+        }
+    }
+
+    private void DrawMapWithoutObjects(SubDungeon subDungeon)
+    {
+        
+        if (subDungeon.IsLeaf())
+        {
+            for (int i = (int)subDungeon.room.x; i < (int)subDungeon.room.xMax; i++)
+            {
+                for (int j = (int)subDungeon.room.y; j < (int)subDungeon.room.yMax; j++)
+                {
+                    var tile = GetTileByNeihbors(i, j);
+                    GameObject instance = Instantiate(tile, new Vector3(i, j, 0f), Quaternion.identity) as GameObject;
+                    instance.transform.SetParent(transform);
+                    tilePositions[i, j] = instance;
+                }
+            }
+            roomCount++;
+        }
+        else
+        {
+            if (subDungeon.bottomLeft != null)
+                DrawMapWithoutObjects(subDungeon.bottomLeft);
+            if (subDungeon.bottomRight != null)
+                DrawMapWithoutObjects(subDungeon.bottomRight);
+            if (subDungeon.topLeft != null)
+                DrawMapWithoutObjects(subDungeon.topLeft);
+            if (subDungeon.topRight != null)
+                DrawMapWithoutObjects(subDungeon.topRight);
         }
 
         foreach (Rect hallway in subDungeon.hallways)
@@ -451,7 +501,14 @@ public class DungeonManager : NetworkBehaviour {
 		GameObject.Find ("Network Manager").GetComponent<NetworkManager2D> ().playerPosition = playerPosition;
     }
 
-	private void SpawnEnemies(Rect room)
+    
+   [Command]
+	private void CmdSpawnEnemies(Rect room)
+    {
+        SpawnEnemies(room);
+	}
+
+    private void SpawnEnemies(Rect room)
     {
         int enemiesInRoom;
         
@@ -461,10 +518,13 @@ public class DungeonManager : NetworkBehaviour {
             enemySpawnPoint = new Vector3(Random.Range(room.x + 1, room.x + (room.xMax - room.x) - 1), 
                                                             Random.Range(room.y + 1, room.y +(room.yMax - room.y) - 1), 0f);
             GameObject instance = GameObject.Instantiate(enemy, enemySpawnPoint, Quaternion.identity, slimeEnemiesContainer.transform);
+            ClientScene.RegisterPrefab(instance);
+            NetworkServer.Spawn(instance);
         }
-        
+
 	}
 
+    
 
 	public void GenerateCoins(Vector3 position)
     {
@@ -535,20 +595,18 @@ public class DungeonManager : NetworkBehaviour {
     }
 
     
-   
+   public override void OnStartLocalPlayer()
+   {
+        Random.InitState(seed);
+        seed_manager.seed_set = true;
+        GenerateDungeon();
+   }
+    
     public override void OnStartClient()
     {
         Random.InitState(seed);
-        GenerateDungeon();
-    }
-
-    public void Start()
-    {
         seed_manager.seed_set = true;
-        //
-        //player = GameObject.FindGameObjectWithTag("Player");
         GenerateDungeon();
     }
-    
 }
 

@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class EnemyController : MonoBehaviour {
+public class EnemyController : NetworkBehaviour {
 
 	public int starting_health;
 

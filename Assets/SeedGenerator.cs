@@ -23,15 +23,15 @@ public class SeedGenerator : NetworkBehaviour
         seed_set = true;
     }
 
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        StartCoroutine(SendEventOnSeedSet());
-    }
-    private IEnumerator SendEventOnSeedSet()
-    {
-        while (!seed_set) yield return null;
-        if (on_seed_set != null) on_seed_set();
-    }
+    // public override void OnStartClient()
+    // {
+    //     base.OnStartClient();
+    //     StartCoroutine(SendEventOnSeedSet());
+    // }
+    // private IEnumerator SendEventOnSeedSet()
+    // {
+    //     while (!seed_set) yield return null;
+    //     if (on_seed_set != null) on_seed_set();
+    // }
 }
 
