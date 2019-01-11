@@ -36,21 +36,21 @@ public class BabyClient : MonoBehaviour {
     }
 
     private void ReceiveInfo () {
-        int datalen = clientSocket.Receive (buffer);
+        int data = clientSocket.Receive (buffer);
 
-        if (datalen == 2) {
+        if (data == 2) {
             short myNewID = BitConverter.ToInt16 (buffer, 0);
             player.GetComponent<NetID> ().ID = myNewID;
             player_info.UpdateID (myNewID);
             return;
         }
 
-        if(datalen == 8){
+        if(data == 8){
             player.transform.position = new Vector2(BitConverter.ToSingle(buffer, 2), BitConverter.ToSingle(buffer, 6));
             return;
         }
 
-        for (int i = 0; i < datalen; i += 10) {
+        for (int i = 0; i < data; i += 10) {
             GameObjects_Info temp = new GameObjects_Info ();
             temp.FromBuffer (buffer, i);
             short tempID = BitConverter.ToInt16 (temp.PlayerID, 0);
