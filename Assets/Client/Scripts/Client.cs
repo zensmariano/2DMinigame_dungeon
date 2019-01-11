@@ -89,6 +89,18 @@ public class Client : MonoBehaviour
             case "SCNN":
                 UsersConnected(aData[1],false);
                 break;
+            case "SAllPlayersPosition":
+                foreach (var player in players)
+                {
+                    if (aData[1].ToString() == player.name)
+                    {
+                        player.position.x = float.Parse(aData[2]);
+                        player.position.x = float.Parse(aData[3]);
+                    }
+                }
+                break;
+            case "SCreatePlayer":
+                Send("CCreatePlayer" + clientName + "|" + ((isHost) ? 1 : 0).ToString() +"|"+"|"+transform.position.y);
         }
     }
 
@@ -127,4 +139,7 @@ public class GameClient
 {
     public string name;
     public bool isHost;
+    public Vector2 startingPosition;
+    public Vector2 position;
+
 }

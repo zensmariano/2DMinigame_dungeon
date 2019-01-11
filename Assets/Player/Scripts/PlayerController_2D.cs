@@ -16,7 +16,7 @@ enum PlayerDungeonStatus
 
 public class PlayerController_2D : NetworkBehaviour
 {
-
+	private static PlayerController_2D Instance { get; set; }
 	[HideInInspector] public PlayerID ID;
 	private float moveSpeed;
 	public float normalMoveSpeed;
@@ -54,10 +54,11 @@ public class PlayerController_2D : NetworkBehaviour
 	private int roomCount;
 
 
-
+	private Client client;
 	// Use this for initialization
 	void Start ()
 	{
+		client = FindObjectOfType<Client>();
 		anim_2d = GetComponent<Animator> ();
 		lifeUI = GameObject.FindGameObjectWithTag("LifeUI").GetComponent<LifeUI>();
 		health = maxHealth;
@@ -73,7 +74,7 @@ public class PlayerController_2D : NetworkBehaviour
 	{
 		
 		
-		if (!isLocalPlayer)
+		if (!client.isHost)
 			return;
 		
 		isMoving = false;
@@ -129,6 +130,9 @@ public class PlayerController_2D : NetworkBehaviour
 		anim_2d.SetFloat ("LastHorizontal", lastMove.x);
 		anim_2d.SetFloat ("LastVertical", lastMove.y);
 		anim_2d.SetBool ("IsMoving", isMoving);
+		
+		client.Send("CPlayerPosition|"+ client.clientName+"|"+transform.position.x+"|"+transform.position.y);
+		
 	}
 
 	public override void OnStartLocalPlayer()
