@@ -8,25 +8,23 @@ using BabyBindings;
 
 public class BabyClient : MonoBehaviour {
 
-	public GameObjects_Info player_info;
-    public GameObject player;
-    private IPAddress serverIP;
+	public GameObjects_Info player_info, player2_info;
+    public GameObject player, player2;
     private Socket clientSocket;
     private byte[] buffer;
 
-	private List<GameObjects_Info> others_info;
     private Dictionary<short, GameObject> activePlayers;
+
 
     private void Start () {
         player_info = new GameObjects_Info ();
-        others_info = new List<GameObjects_Info> ();
+        player2_info = new GameObjects_Info();
         activePlayers = new Dictionary<short, GameObject> ();
 
         clientSocket = new Socket (AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         clientSocket.Connect (IPAddress.Loopback, Constants.Port);
 
         buffer = new byte[GameObjects_Info.MaxWireSize];
-
     }
 
     private void Update () {
@@ -34,7 +32,7 @@ public class BabyClient : MonoBehaviour {
 		player_info.ToBuffer (ref buffer);
         clientSocket.Send (buffer);
         ReceiveInfo ();
-        HandleOthersInfo ();
+        ControlInfo ();
     }
 
     private void ReceiveInfo () {
@@ -48,11 +46,11 @@ public class BabyClient : MonoBehaviour {
         }
 
         if(datalen == 8){
-            player.transform.position = new Vector2(BitConverter.ToSingle(buffer, 0), BitConverter.ToSingle(buffer, 4));
+            player.transform.position = new Vector2(BitConverter.ToSingle(buffer, 2), BitConverter.ToSingle(buffer, 6));
             return;
         }
 
-        for (int i = 0; i < datalen; i += 14) {
+        for (int i = 0; i < datalen; i += 10) {
             GameObjects_Info temp = new GameObjects_Info ();
             temp.FromBuffer (buffer, i);
             short tempID = BitConverter.ToInt16 (temp.PlayerID, 0);
@@ -61,45 +59,45 @@ public class BabyClient : MonoBehaviour {
                 continue; 
 
             if (activePlayers.ContainsKey (tempID) == false) {
-                others_info.Add (temp);
+                player2_info = temp;
                 CreateNewPlayer (tempID);
-            } else {
-                Debug.Log(BitConverter.ToInt16 (others_info[0].PlayerID, 0));
+            }
+
+            else {
+                Debug.Log(BitConverter.ToInt16 (player2_info.PlayerID, 0));
                 UpdateInfo(temp);
             }
         }
     }
 
     private void UpdateInfo (GameObjects_Info pInfo) {
-        foreach (var info in others_info) {
-            if ((BitConverter.ToInt16 (info.PlayerID, 0) == BitConverter.ToInt16 (pInfo.PlayerID, 0)))
-                info.PositionX = pInfo.PositionX;
-                info.PositionY = pInfo.PositionY;
+        
+        if((BitConverter.ToInt16 (player2_info.PlayerID, 0) == BitConverter.ToInt16 (pInfo.PlayerID, 0))){
+            player2_info.PositionX = pInfo.PositionX;
+            player2_info.PositionY = pInfo.PositionY;
         }
+        
     }
 
-
     private void CreateNewPlayer (short id) {
-		
         GameObject newInstance = Instantiate (player, Vector3.right, Quaternion.identity);
         newInstance.AddComponent (typeof (NetID));
         newInstance.GetComponent<NetID> ().ID = id;
-		
         activePlayers.Add (id, player);
     }
 
-    private void HandleOthersInfo () {
+
+    private void ControlInfo () {
+        
         foreach (var p in activePlayers) {
-            foreach (var info in others_info) {
-                if (p.Key == BitConverter.ToInt16 (info.PlayerID, 0)) {
-                    Vector2 newPosition = Vector2.zero;
-                    float newZRot = 0;
-                    info.ConvertToUsableValues (ref newPosition.x, ref newPosition.y, ref newZRot);
-                    p.Value.transform.position = new Vector3 (newPosition.x, newPosition.y, p.Value.transform.position.z);
-                    p.Value.transform.eulerAngles = new Vector3(p.Value.transform.eulerAngles.x, p.Value.transform.eulerAngles.y, newZRot);
-                }
+             Vector2 newPosition = Vector2.zero;
+                
+                if (p.Key == BitConverter.ToInt16 (player2_info.PlayerID, 0)) {
+                 
+                    player2_info.Convert(ref newPosition.x, ref newPosition.y);
+                    p.Value.transform.position = new Vector3 (newPosition.x, newPosition.y);
             }
         }
-    }
 
+    }
 }
